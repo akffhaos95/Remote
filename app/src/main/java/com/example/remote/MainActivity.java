@@ -14,17 +14,23 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
-    private SocketManager socketManager;
+    public SendData sendData = null;
     TextView textTv;
     EditText textIP, textPort;
     ImageButton voiceBtn;
     Button connBtn;
+    String ip = null;
+    int port = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +62,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.connBtn:
-                String ip = textIP.getText().toString();
-                int port = Integer.parseInt(textPort.getText().toString());
-
-                socketManager = new SocketManager(ip,port, handler);
-                break;
+                ip = textIP.getText().toString();
+                port = Integer.parseInt(textPort.getText().toString());
+            break;
 
             case R.id.voiceBtn:
                 speak();
+                sendData = new SendData();
+                sendData.start();
         }
     }
 
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 //get text array from voice intent
                                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                                 //set to the text
-                                socketManager.sendData(result.get(0));
+                                //sendData(result.get(0));
                                 textTv.setText(result.get(0));
                             }
                 break;
@@ -104,4 +110,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    class SendData extends Thread{
+        public void run(){
+            try{
+                DatagramSocket socket = new DatagramSocket();
+                InetAddress serverAddress = InetAddress.getByName(ip);
+                byte[] buf = ("Heool World").getBytes();
+
+                DatagramPacket packet = new DatagramPacket(buf, buf.length, serverAddress, port);
+                socket.send(packet);
+                socket.receive(packet);
+                String msg = new String(packet.getData());
+                textTv.setText(msg);
+            } catch (Exception e){
+
+            }
+        }
+    }
 }
