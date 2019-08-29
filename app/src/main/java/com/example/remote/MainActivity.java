@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         voiceBtn = findViewById(R.id.voiceBtn);
-        connBtn = findViewById(R.id.connBtn);
         textTv = findViewById(R.id.textTv);
         textIP = findViewById(R.id.textIP);
         textPort = findViewById(R.id.textPort);
