@@ -11,6 +11,7 @@ while 1:
 */
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
@@ -32,13 +33,12 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
-    public static final int intent_list = 1001;
     public SendData sendData = null;
 
     TextView textTv;
     EditText textIP, textPort;
     ImageButton voiceBtn;
-    Button connBtn;
+    Button listBtn;
 
     String ip = null;
     int port = 0;
@@ -50,24 +50,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         voiceBtn = findViewById(R.id.voiceBtn);
+        listBtn = findViewById(R.id.listBtn);
         textTv = findViewById(R.id.textTv);
         textIP = findViewById(R.id.textIP);
         textPort = findViewById(R.id.textPort);
 
         voiceBtn.setOnClickListener(this);
-        connBtn.setOnClickListener(this);
+        listBtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.voiceBtn:
-                ip = textIP.getText().toString();
-                port = Integer.parseInt(textPort.getText().toString());
-                speak();
+                if(textIP.getText().toString().length()==0 || textPort.getText().toString().length()==0){
+                    Toast.makeText(this, "IP와 Port를 입력하세요", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    ip = textIP.getText().toString();
+                    port = Integer.parseInt(textPort.getText().toString());
+                    speak();
+                }
+                break;
             case R.id.listBtn:
-                Intent intent2 = new Intent(getApplicationContext(),ListActivity.class);
-                startActivityForResult(intent2,intent_list);
+                Intent intent2 = new Intent(getApplicationContext(), ListviewActivity.class);
+                startActivityForResult(intent2,1001);
+                break;
         }
     }
 
@@ -75,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hi speak something");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "명령을 말해주세요");
         try {
             startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
         }
@@ -93,12 +101,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 Log.d("result","result start");
                                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                                 command = result.get(0);
-                                sendData = new SendData();
-                                sendData.start();
-                                textTv.setText("client : "+result.get(0));
+                                textChange();
+                                if(command=="0"){
+                                    textTv.setText("존재하지 않는 제품입니다. 제품 리스트를 추가해주세요.");
+                                }
+                                else {
+                                    sendData = new SendData();
+                                    sendData.start();
+                                    textTv.setText("client : " + command);
+                                }
                             }
-                break;
+                            break;
             }
+        }
+    }
+
+    public void textChange(){
+        SharedPreferences sf = getSharedPreferences("model", MODE_PRIVATE);
+        if(command.contains("TV")){
+            command = command.replace("TV","테레비");
+        }
+        else {
+            command = "0";
         }
     }
 

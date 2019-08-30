@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+    <TextView
+        android:text="Error"
+        android:id="@+id/titleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/nameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="호출명"
+        android:textSize="20dp"
+        android:layout_below="@+id/titleView"/>
+
+    <EditText
+        android:id="@+id/modelText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="모델명"
+        android:textSize="20dp"
+        android:layout_below="@+id/nameText"/>
+
+    <Button
+        android:id="@+id/applyBtn"
+        android:text="저장"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/modelText"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
