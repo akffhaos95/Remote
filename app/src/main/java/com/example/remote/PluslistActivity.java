@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PluslistActivity extends AppCompatActivity implements View.OnClickListener {
+    public final String PREFERENCE = "com.example.remote";
     TextView titleView;
     EditText nameText, modelText;
     Button applyBtn;
@@ -43,15 +44,19 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
             case R.id.applyBtn:
                 if(nameText.getText().toString().length()==0 || modelText.getText().toString().length()==0){
                     Toast.makeText(this, "빈칸을 입력하세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    name = nameText.getText().toString();
+                    model = modelText.getText().toString();
+                    save();
                 }
-                name = nameText.getText().toString();
-                model = modelText.getText().toString();
-                save();
                 break;
         }
     }
 
     private void save(){
-
+        SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(model, name);
+        editor.commit();
     }
 }

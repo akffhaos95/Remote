@@ -2,6 +2,7 @@ package com.example.remote;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class ListviewActivity extends AppCompatActivity implements View.OnClickListener {
+    public final String PREFERENCE = "com.example.remote";
     private Context context;
     private ArrayList<String> array;
     private ListView listView;
@@ -25,17 +27,13 @@ public class ListviewActivity extends AppCompatActivity implements View.OnClickL
         plus = findViewById(R.id.plus);
 
         plus.setOnClickListener(this);
+
         array = new ArrayList<>();
-        array.add("한라산");
-        array.add("백두산");
-        array.add("월출산");
-        array.add("금강산");
-        array.add("마니산");
-        array.add("설악산");
-        array.add("관악산");
-        array.add("지리산");
-        array.add("대둔산");
-        array.add("도봉산");
+        SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
+        for (int i = 0;; ++i){
+            final String str = pref.getString(String.valueOf(i), "");
+            if (!str.equals("")){ array.add(str); } else { break; }
+        }
 
         listviewAdapter = new ListviewAdapter(context, array);
         listView.setAdapter(listviewAdapter);
