@@ -5,37 +5,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ListviewAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<String> array;
+    private ArrayList<String> arrayList, arrayList2;
     private ViewHolder viewHolder;
 
-    public ListviewAdapter(Context context, ArrayList<String> array){
+    public ListviewAdapter(Context context, ArrayList<String> arrayList, ArrayList<String> arrayList2){
         this.context = context;
-        this.array=array;
+        this.arrayList=arrayList;
+        this.arrayList2=arrayList2;
     }
-
     @Override
     public int getCount() {
-        return array.size();
+        return arrayList.size();
     }
-
     @Override
     public Object getItem(int i) {
-        return array.get(i);
+        return arrayList.get(i);
     }
-
     @Override
     public long getItemId(int i) {
         return i;
     }
-
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view==null){
@@ -43,16 +38,16 @@ public class ListviewAdapter extends BaseAdapter {
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         } else viewHolder = (ViewHolder)view.getTag();
-
-        viewHolder.nextText.setText(array.get(i));
+        viewHolder.nextText.setText(arrayList.get(i));
+        viewHolder.nextText2.setText(arrayList2.get(i));
         return view;
     }
-
     public class ViewHolder {
         private TextView nextText;
-
+        private TextView nextText2;
         public ViewHolder(View convertView) {
-            nextText = convertView.findViewById(R.id.textView1);
+            nextText = convertView.findViewById(R.id.textViewName);
+            nextText2 = convertView.findViewById(R.id.textViewModel);
         }
     }
 }

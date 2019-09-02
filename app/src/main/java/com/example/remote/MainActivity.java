@@ -28,33 +28,31 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
-    public SendData sendData = null;
-
+    public final String PREFERENCE = "com.example.remote";
+    SendData sendData = null;
     TextView textTv;
     EditText textIP, textPort;
     ImageButton voiceBtn;
     Button listBtn;
-
-    String ip = null;
+    String ip = null, command = null, data=null, name_l;
     int port = 0;
-    String command = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         voiceBtn = findViewById(R.id.voiceBtn);
         listBtn = findViewById(R.id.listBtn);
         textTv = findViewById(R.id.textTv);
         textIP = findViewById(R.id.textIP);
         textPort = findViewById(R.id.textPort);
-
         voiceBtn.setOnClickListener(this);
         listBtn.setOnClickListener(this);
     }
@@ -98,10 +96,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     switch(requestCode){
                         case REQUEST_CODE_SPEECH_INPUT: {
                             if(resultCode == RESULT_OK && null !=data){
-                                Log.d("result","result start");
                                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                                 command = result.get(0);
-                                textChange();
+                                textChange(command);
                                 if(command=="0"){
                                     textTv.setText("존재하지 않는 제품입니다. 제품 리스트를 추가해주세요.");
                                 }
@@ -116,10 +113,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void textChange(){
-        SharedPreferences sf = getSharedPreferences("model", MODE_PRIVATE);
+    public void textChange(String command){
+        SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
+        Collection<?> name =  pref.getAll().values();
+        Iterator<?> it = name.iterator();
+        Iterator<?> it2 = name.iterator();
+
+        while(it.hasNext()) {
+            name_l = (String)it.next();
+            if(command == name_l){
+                break;
+            }
+        }
         if(command.contains("TV")){
-            command = command.replace("TV","테레비");
+            command = command.replace(command,name_l);
         }
         else {
             command = "0";
@@ -139,9 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //socket.receive(packet);
                 //String msg = new String(packet.getData());
                 //textTv.setText(msg);
-            } catch (Exception e){
-
-            }
+            } catch (Exception e){ }
         }
     }
 }

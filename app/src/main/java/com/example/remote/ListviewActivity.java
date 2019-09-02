@@ -10,14 +10,17 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class ListviewActivity extends AppCompatActivity implements View.OnClickListener {
     public final String PREFERENCE = "com.example.remote";
     private Context context;
-    private ArrayList<String> array;
+    private ArrayList<String> arrayList, arrayList2;
     private ListView listView;
     private ListviewAdapter listviewAdapter;
     private ImageButton plus;
+    private String model_l, name_l;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,20 +28,33 @@ public class ListviewActivity extends AppCompatActivity implements View.OnClickL
         this.context = getApplicationContext();
         listView = findViewById(R.id.listview);
         plus = findViewById(R.id.plus);
-
         plus.setOnClickListener(this);
-
-        array = new ArrayList<>();
+        arrayList = new ArrayList<>();
+        arrayList2 = new ArrayList<>();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
         SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
-        for (int i = 0;; ++i){
-            final String str = pref.getString(String.valueOf(i), "");
-            if (!str.equals("")){ array.add(str); } else { break; }
+        Collection<?> model = pref.getAll().keySet();
+        Collection<?> name =  pref.getAll().values();
+        Iterator<?> it = name.iterator();
+        Iterator<?> it2 = model.iterator();
+        while(it.hasNext()) {
+            name_l = (String)it.next();
+            model_l = (String)it2.next();
+            arrayList.add(name_l);
+            arrayList2.add(model_l);
         }
-
-        listviewAdapter = new ListviewAdapter(context, array);
+        listviewAdapter = new ListviewAdapter(context, arrayList, arrayList2);
         listView.setAdapter(listviewAdapter);
     }
-
+    @Override
+    protected void onPause(){
+        super.onPause();
+        arrayList.clear();
+        arrayList2.clear();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()){
