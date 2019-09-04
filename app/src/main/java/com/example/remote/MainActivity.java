@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
+import static java.lang.Boolean.TRUE;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
@@ -41,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText textIP, textPort;
     ImageButton voiceBtn;
     Button listBtn;
-    String ip = null, command = null, data=null, name_l;
-    int port = 0;
+    String ip = null, command = null;
+    int port=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +63,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.voiceBtn:
-                if(textIP.getText().toString().length()==0 || textPort.getText().toString().length()==0){
-                    Toast.makeText(this, "IP와 Port를 입력하세요", Toast.LENGTH_SHORT).show();
+                String port_str;
+                ip = textIP.getText().toString();
+                port_str = textPort.getText().toString();
+                if(ip.length()==0 || port_str.length()==0){
+                    Toast.makeText(this, "IP와 PORT를 입력하세요", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    ip = textIP.getText().toString();
-                    port = Integer.parseInt(textPort.getText().toString());
-                    speak();
+                    try {
+                        port = Integer.parseInt(port_str);
+                        speak();
+                    } catch(NumberFormatException e){
+                        Toast.makeText(this, "포트는 숫자를 입력해야합니다.", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case R.id.listBtn:
@@ -76,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
     private void speak() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -98,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             if(resultCode == RESULT_OK && null !=data){
                                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                                 command = result.get(0);
-                                textChange(command);
+                                command = textChange(command);
                                 if(command=="0"){
                                     textTv.setText("존재하지 않는 제품입니다. 제품 리스트를 추가해주세요.");
                                 }
@@ -113,24 +120,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void textChange(String command){
+    public String textChange(String comm){
         SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
-        Collection<?> name =  pref.getAll().values();
+        Collection<?> name =  pref.getAll().keySet();
         Iterator<?> it = name.iterator();
-
         while(it.hasNext()) {
-            name_l = (String)it.next();
-            if(command.contains(name_l)){
+            String name_list = (String)it.next();
+            if(comm.contains(name_list) == TRUE){
+                comm = comm.replace(name_list,pref.getString(name_list,"0"));
                 break;
             }
         }
-        command.replace(name_l,pref.getString(name_l,"0"));
+        return comm;
     }
 
     class SendData extends Thread{
         public void run(){
             try{
-                Log.d("send","send start");
                 DatagramSocket socket = new DatagramSocket();
                 InetAddress serverAddress = InetAddress.getByName(ip);
                 byte[] buf = (command).getBytes();
