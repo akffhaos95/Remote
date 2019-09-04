@@ -117,20 +117,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
         Collection<?> name =  pref.getAll().values();
         Iterator<?> it = name.iterator();
-        Iterator<?> it2 = name.iterator();
 
         while(it.hasNext()) {
             name_l = (String)it.next();
-            if(command == name_l){
+            if(command.contains(name_l)){
                 break;
             }
         }
-        if(command.contains("TV")){
-            command = command.replace(command,name_l);
-        }
-        else {
-            command = "0";
-        }
+        command.replace(name_l,pref.getString(name_l,"0"));
     }
 
     class SendData extends Thread{

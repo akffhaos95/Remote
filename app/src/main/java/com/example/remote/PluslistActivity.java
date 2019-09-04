@@ -10,12 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 public class PluslistActivity extends AppCompatActivity implements View.OnClickListener {
     public final String PREFERENCE = "com.example.remote";
+
     TextView titleView;
     EditText nameText, modelText;
     Button applyBtn;
-    String title, model, name;
+    String title, model, name, name_c;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -55,8 +59,17 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
     protected void save(){
         SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString(model, name);
         //중복검사 해야함
+        Collection<?> name_check =  pref.getAll().values();
+        Iterator<?> it = name_check.iterator();
+        while(it.hasNext()) {
+            name_c = (String)it.next();
+            if(name==name_c){
+                Toast.makeText(this, "이름이 중복됩니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+        editor.putString(name,model);
         editor.commit();
         Toast.makeText(this,"저장 완료",Toast.LENGTH_SHORT).show();
     }

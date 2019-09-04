@@ -36,8 +36,8 @@ public class ListviewActivity extends AppCompatActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
-        Collection<?> model = pref.getAll().keySet();
-        Collection<?> name =  pref.getAll().values();
+        Collection<?> name = pref.getAll().keySet();
+        Collection<?> model =  pref.getAll().values();
         Iterator<?> it = name.iterator();
         Iterator<?> it2 = model.iterator();
         while(it.hasNext()) {
