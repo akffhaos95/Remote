@@ -19,7 +19,7 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
     TextView titleView;
     EditText nameText, modelText;
     Button applyBtn;
-    String title, model, name, name_ck, model_ck;
+    String title, model, name;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -60,24 +60,6 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
     protected void save(){
         SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        Collection<?> name_check =  pref.getAll().keySet();
-        Collection<?> model_check =  pref.getAll().keySet();
-        Iterator<?> it = name_check.iterator();
-        Iterator<?> it2 = model_check.iterator();
-        while(it.hasNext()) {
-            name_ck = (String)it.next();
-            if(name == name_ck){
-                Toast.makeText(this, "이름이 중복됩니다.", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-        while(it2.hasNext()){
-            if(model == model_ck) {
-                model_ck = (String) it.next();
-                Toast.makeText(this, "모델명이 중복됩니다.", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
         editor.putString(name,model);
         editor.commit();
         Toast.makeText(this,"저장 완료",Toast.LENGTH_SHORT).show();
