@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         while(it.hasNext()) {
             String name_list = (String)it.next();
             if(comm.contains(name_list) == TRUE){
-                comm = comm.replace(name_list,pref.getString(name_list,"0"));
+                comm = comm.replace(name_list,'"'+pref.getString(name_list,"0")+'"');
                 break;
             }
         }
