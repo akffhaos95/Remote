@@ -73,11 +73,6 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    class SendData extends Thread{
-        public void run(){
-
-        }
-    }
     protected void save(){
         SharedPreferences pref = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
