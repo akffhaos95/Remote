@@ -126,12 +126,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Iterator<?> it = name.iterator();
         while(it.hasNext()) {
             String name_list = (String)it.next();
-            if(comm.contains(name_list) == TRUE){
-                comm = comm.replace(name_list,'"'+pref.getString(name_list,"0")+'"');
-                break;
+            if(comm.contains(name_list) == TRUE) {
+                comm = comm.replace(name_list, '"' + pref.getString(name_list, "0") + '"');
+                return comm;
             }
         }
-        return comm;
+        return "0";
     }
 
     class SendData extends Thread{

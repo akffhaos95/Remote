@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,8 @@ import java.util.Locale;
 public class PluslistActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
     public final String PREFERENCE = "com.example.remote";
-    TextView titleView, nameText, modelText;
+    TextView titleView, nameText;
+    EditText modelText;
     Button applyBtn, nameBtn, modelBtn;
     String title, model, name, name_ck, model_ck, speakname;
     @Override
@@ -68,7 +70,7 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
                 speak();
                 break;
             case R.id.modelBtn:
-                //DB 액티비티 만들기
+
                 break;
         }
     }
@@ -82,12 +84,15 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
         Iterator<?> it2 = model_check.iterator();
         while(it.hasNext()) {
             name_ck = (String)it.next();
+            Log.d("test3",name_ck);
             if(name == name_ck){
                 Toast.makeText(this, "이름이 중복됩니다.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
         while(it2.hasNext()){
+            model_ck = (String)it2.next();
+            Log.d("test3",model_ck);
             if(model == model_ck) {
                 model_ck = (String) it.next();
                 Toast.makeText(this, "모델명이 중복됩니다.", Toast.LENGTH_SHORT).show();
