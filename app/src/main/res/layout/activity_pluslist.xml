@@ -1,38 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:orientation="vertical">
+
     <TextView
         android:text="Error"
         android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"/>
+        android:textSize="40dp"
+        android:padding="10dp"/>
 
-    <EditText
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+    <TextView
         android:id="@+id/nameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="호출명"
         android:textSize="20dp"
-        android:layout_below="@+id/titleView"/>
+        android:padding="10dp"/>
 
-    <EditText
+    <Button
+        android:id="@+id/nameBtn"
+        android:text="호출명 말하여 추가하기"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+    <TextView
         android:id="@+id/modelText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="모델명"
         android:textSize="20dp"
-        android:layout_below="@+id/nameText"/>
+        android:padding="10dp"/>
 
+    <Button
+        android:id="@+id/modelBtn"
+        android:text="모델명 찾아서 추가하기"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
     <Button
         android:id="@+id/applyBtn"
         android:text="저장"
         android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/modelText"
-        android:layout_centerHorizontal="true"/>
+        android:layout_gravity="center"
+        android:padding="10dp"/>
 
-</RelativeLayout>
+</LinearLayout>
