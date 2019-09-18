@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -67,6 +70,12 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
             case R.id.modelBtn:
                 //DB 액티비티 만들기
                 break;
+        }
+    }
+
+    class SendData extends Thread{
+        public void run(){
+
         }
     }
     protected void save(){
