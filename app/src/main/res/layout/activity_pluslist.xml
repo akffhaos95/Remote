@@ -6,8 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:text="Error"
-        android:id="@+id/titleView"
+        android:text="제품 등록"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="40dp"
@@ -44,7 +43,7 @@
 
     <Button
         android:id="@+id/modelBtn"
-        android:text="모델명 찾아서 추가하기"
+        android:text="모델 체크"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

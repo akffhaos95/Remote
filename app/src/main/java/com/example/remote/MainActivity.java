@@ -72,6 +72,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else{
                     try {
                         port = Integer.parseInt(port_str);
+                        SharedPreferences socketPref = getSharedPreferences("socket", MODE_PRIVATE);
+                        SharedPreferences.Editor socketeditor = socketPref.edit();
+                        socketeditor.putString("IP",ip);
+                        socketeditor.putInt("PORT",port);
+                        socketeditor.commit();
                         speak();
                     } catch(NumberFormatException e){
                         Toast.makeText(this, "포트는 숫자를 입력해야합니다.", Toast.LENGTH_SHORT).show();
