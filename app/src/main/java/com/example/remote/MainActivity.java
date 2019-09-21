@@ -112,12 +112,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 command = result.get(0);
                                 command = textChange(command);
                                 if(command=="0"){
-                                    textTv.setText("존재하지 않는 제품입니다. 제품 리스트를 추가해주세요.");
+                                    textTv.setText("존재하지 않는 제품입니다.");
                                 }
                                 else {
                                     sendData = new SendData();
                                     sendData.start();
-                                    textTv.setText("client : " + command);
                                 }
                             }
                             break;
@@ -148,9 +147,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 DatagramPacket packet = new DatagramPacket(buf, buf.length, serverAddress, port);
                 socket.send(packet);
-                //socket.receive(packet);
-                //String msg = new String(packet.getData());
-                //textTv.setText(msg);
+                socket.receive(packet);
+                String msg = new String(packet.getData());
+                textTv.setText(msg);
             } catch (Exception e){ }
         }
     }

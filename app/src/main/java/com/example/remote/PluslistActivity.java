@@ -3,6 +3,7 @@ package com.example.remote;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
     EditText modelText;
     Button applyBtn, nameBtn, modelBtn;
     String model, name, speakname, ip="", res="";
+    Boolean dbcheck=Boolean.FALSE;
     int port=0;
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -66,9 +68,6 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
                     else {
                         checkData = new CheckData();
                         checkData.start();
-                        if(model==res){
-                            Toast.makeText(this,"DB. OK",Toast.LENGTH_SHORT).show();
-                        } else Toast.makeText(this,"DB. Fail",Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -78,12 +77,12 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
                 if(name.length()==0 || model.length()==0){
                     Toast.makeText(this, "빈칸이 있습니다.", Toast.LENGTH_SHORT).show();
                 }
-                else if(model==res){
-                    Toast.makeText(this,"모델명 체크를 해주시길 바랍니다.",Toast.LENGTH_SHORT).show();
-                }
-                else {
+                else if(dbcheck==Boolean.TRUE){
                     save();
                     finish();
+                }
+                else {
+                    Toast.makeText(this,"모델명 체크를 해주시길 바랍니다.",Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -96,8 +95,15 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
                 byte[] buf = ("$"+model).getBytes();
                 DatagramPacket packet = new DatagramPacket(buf, buf.length, serverAddress, port);
                 socket.send(packet);
+                byte[] buf2=("aaa").getBytes();
+                packet = new DatagramPacket(buf2,buf2.length,serverAddress,port);
                 socket.receive(packet);
                 res = new String(packet.getData());
+                Log.d("test2",res+" : "+model);
+                modelBtn.setText(res);
+                if(res=="Yes") {
+                    dbcheck = Boolean.TRUE;
+                }
             } catch (Exception e) { }
         }
     }
