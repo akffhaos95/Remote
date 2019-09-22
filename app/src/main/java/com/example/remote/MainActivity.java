@@ -60,6 +60,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences socketPref = getSharedPreferences("socket", MODE_PRIVATE);
+        ip = socketPref.getString("IP"," ");
+        port = socketPref.getInt("PORT",0);
+        textIP.setText(ip);
+        textPort.setText(Integer.toString(port));
+    }
+
+    @Override
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.voiceBtn:

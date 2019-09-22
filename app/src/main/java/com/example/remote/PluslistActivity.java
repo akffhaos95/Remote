@@ -30,7 +30,6 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
     EditText modelText;
     Button applyBtn, nameBtn, modelBtn;
     String model, name, speakname, ip="", res="";
-    Boolean dbcheck=Boolean.FALSE;
     int port=0;
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -77,7 +76,7 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
                 if(name.length()==0 || model.length()==0){
                     Toast.makeText(this, "빈칸이 있습니다.", Toast.LENGTH_SHORT).show();
                 }
-                else if(dbcheck==Boolean.TRUE){
+                else if(res=="Yes"){
                     save();
                     finish();
                 }
@@ -101,9 +100,6 @@ public class PluslistActivity extends AppCompatActivity implements View.OnClickL
                 res = new String(packet.getData());
                 Log.d("test2",res+" : "+model);
                 modelBtn.setText(res);
-                if(res=="Yes") {
-                    dbcheck = Boolean.TRUE;
-                }
             } catch (Exception e) { }
         }
     }
